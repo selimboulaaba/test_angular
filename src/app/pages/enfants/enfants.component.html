@@ -1,0 +1,153 @@
+<div class="bg-white shadow-lg rounded p-10 mb-6">
+    <div *ngIf="parentLoading; else displayChildren" class="col-span-12">
+        <app-spinner></app-spinner>
+    </div>
+    <ng-template #displayChildren>
+        <div class="grid grid-cols-12 gap-2">
+            <div *ngFor="let e of enfants" (click)="selectChild(e.id)"
+                [ngClass]="{'!text-white !bg-gradient-to-r !from-[#468fc8] !to-[#2ccbf1]': enfant.id === e.id}"
+                class="hover:text-white hover:bg-gradient-to-r hover:from-[#4e9edb] hover:to-[#30f1ff] hover:cursor-pointer relative col-span-3 border border-gray-500 shadow-md rounded-xl text-center font-bold text-[#38aed2] h-[80px]">
+                <img [src]="e.user.photo ? e.user.photo : 'assets/3135768.png'" alt="profile"
+                    class="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 -translate-y-1/4 w-[20%] rounded-full border aspect-square">
+                <div class="mt-[40px]">{{e.user.first_name}} {{e.user.last_name}}</div>
+            </div>
+
+            <div
+                class="hover:text-white hover:bg-gradient-to-r hover:from-[#4e9edb] hover:to-[#30f1ff] hover:cursor-pointer col-span-3 border border-gray-900 shadow-md border-dashed rounded-xl text-center font-bold text-[#38aed2] h-[70px] flex justify-center items-center">
+                <i class="fa-solid fa-plus text-3xl"></i>
+            </div>
+        </div>
+    </ng-template>
+
+
+    <div class="grid grid-cols-12">
+        <div *ngIf="childLoading; else displayProfile" class="col-span-12">
+            <app-spinner></app-spinner>
+        </div>
+        <ng-template #displayProfile>
+            <div class="p-3 mt-5 mb-3 text-[#38aed2] font-bold col-span-12 text-xl">INFORMATION DE BASE</div>
+
+            <div class="col-span-2">
+                <img [src]="enfant.user.photo ? enfant.user.photo : 'assets/3135768.png'"
+                    class="ml-4 w-[80%] md:w-[56%] aspect-square rounded-full border" alt="profile">
+            </div>
+            <div class="col-span-10 pt-3">
+                <div class="mb-3">
+                    <p>Votre photo de profil</p>
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        class="px-5 py-1 text-white bg-gradient-to-r from-[#468fc8] to-[#2ccbf1] border border-[#38aed2] rounded"><i
+                            class="fa-solid fa-pen-to-square"></i> Remplacer</button>
+                    <button
+                        class="px-5 py-1 hover:text-white hover:bg-gradient-to-r hover:from-[#468fc8] hover:to-[#2ccbf1]  text-[#38aed2] bg-white rounded border border-[#38aed2]"><i
+                            class="fa-solid fa-trash"></i> Supprimer</button>
+                </div>
+            </div>
+
+            <form [formGroup]="profileForm" class="col-span-12 grid grid-cols-12 mt-8 text-gray-600"
+                (ngSubmit)="updateChild()">
+                <div class="col-span-6 px-3">
+                    <label for="first_name">Prénom</label>
+                    <input id="first_name" formControlName="first_name" type="text"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                    <div *ngIf="profileForm.get('first_name')?.invalid && profileForm.get('first_name')?.touched"
+                        class="text-red-500 mt-1 text-sm">
+                        Prénom est obligatoire.
+                    </div>
+                </div>
+                <div class="col-span-6 px-3">
+                    <label for="last_name">Nom</label>
+                    <input id="last_name" formControlName="last_name" type="text"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                    <div *ngIf="profileForm.get('last_name')?.invalid && profileForm.get('last_name')?.touched"
+                        class="text-red-500 mt-1 text-sm">
+                        Nom est obligatoire.
+                    </div>
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="first_name">Date de naissance</label>
+                    <input id="first_name" formControlName="birthday" type="date"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                    <div *ngIf="profileForm.get('birthday')?.invalid && profileForm.get('birthday')?.touched"
+                        class="text-red-500 mt-1 text-sm">
+                        Date de naissance est obligatoire.
+                    </div>
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="first_name">Genre</label>
+                    <div class="mt-7 flex items-center gap-4">
+                        <div>
+                            <input type="radio" id="male" formControlName="gender" value="M"
+                                class="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <label for="male">Male</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="female" formControlName="gender" value="F"
+                                class="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <label for="female">Female</label>
+                        </div>
+                    </div>
+                    <div *ngIf="profileForm.get('gender')?.invalid && profileForm.get('gender')?.touched"
+                        class="text-red-500 mt-1 text-sm">
+                        Genre est obligatoire.
+                    </div>
+                </div>
+                <div class="col-span-12 mt-6 text-right px-4">
+                    <button type="reset"
+                        class="mr-4 px-5 py-1 text-gray-600 bg-gray-200 hover:bg-gray-300 border border-gray-200 rounded">
+                        Annuler</button>
+                    <button type="submit"
+                        class="px-5 py-1 text-white bg-gradient-to-r from-[#468fc8] to-[#2ccbf1] hover:from-[#4082b5] hover:to-[#2abade] rounded border border-[#38aed2]">
+                        Enregistrer</button>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</div>
+
+<div class="bg-white shadow-lg rounded p-10 pr-0 pb-5 mb-10">
+    <div *ngIf="childLoading; else displaySocials" class="col-span-12">
+        <app-spinner></app-spinner>
+    </div>
+    <ng-template #displaySocials>
+        <div class="p-3 mb-3 text-[#38aed2] font-bold col-span-12 text-xl uppercase">les réseaux sociaux de
+            {{enfant.user.first_name}} </div>
+        <div class="px-4 py-2 grid grid-cols-12 items-center">
+            <i class="col-span-1 fa-brands fa-facebook text-gray-400 text-4xl"></i>
+            <div class="col-span-2 text-gray-600 font-bold">Facebook</div>
+
+            <div *ngIf="checked; else diaplayUsername" class="col-span-8">
+                <div class="mr-4 text-right text-gray-400">{{username}}</div>
+            </div>
+            <ng-template #diaplayUsername>
+                <input type="text" placeholder="Nom d'utilisateur" [(ngModel)]="username"
+                    class="col-span-6 mr-16 px-4 py-1 rounded border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2">
+                <button (click)="checked = true"
+                    class="col-span-2 mr-4 px-5 py-1 text-white bg-gradient-to-r from-[#468fc8] to-[#2ccbf1] hover:from-[#4082b5] hover:to-[#2abade] border border-[#38aed2] rounded">Enregistrer</button>
+            </ng-template>
+
+            <i class="col-span-1 fa-solid fa-x text-gray-400 text-lg"></i>
+        </div>
+        <hr class="mr-10">
+        <div class="px-4 py-2 grid grid-cols-12 items-center">
+            <i class="col-span-1 fa-brands fa-twitter text-gray-400 text-4xl"></i>
+            <div class="col-span-2 text-gray-600 font-bold">Twitter</div>
+            <div class="col-span-8 mr-4 text-right text-gray-400">{{enfant.user.email}}</div>
+            <i class="col-span-1 fa-solid fa-x text-gray-400 text-lg"></i>
+        </div>
+        <hr class="mr-10">
+        <div class="px-4 py-2 grid grid-cols-12 items-center">
+            <i class="col-span-1 fa-brands fa-instagram text-gray-400 text-4xl"></i>
+            <div class="col-span-2 text-gray-600 font-bold">Instagram</div>
+            <div class="col-span-8 mr-4 text-right text-gray-400">{{enfant.user.email}}</div>
+            <i class="col-span-1 fa-solid fa-x text-gray-400 text-lg"></i>
+        </div>
+        <hr class="mr-10">
+        <div class="px-4 py-2 flex justify-center text-gray-400 space-x-3 items-center">
+            <i class="fa-solid fa-plus text-gray-400 text-4xl hover:text-gray-600"></i>
+            <div class="hover:cursor-pointer text-2xl hover:text-gray-600">Ajouter un réseau social</div>
+        </div>
+    </ng-template>
+</div>

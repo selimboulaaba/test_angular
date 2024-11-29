@@ -1,0 +1,79 @@
+<div class="bg-white shadow-lg rounded p-10">
+    <div class="grid grid-cols-12">
+        <div *ngIf="loading; else displayProfile" class="col-span-12">
+            <app-spinner></app-spinner>
+        </div>
+        <ng-template #displayProfile>
+            <div class="col-span-2">
+                <img [src]="profile.photo ? profile.photo : 'assets/3135768.png'" class="ml-4 w-[80%] md:w-[56%] aspect-square rounded-full border"
+                    alt="profile">
+            </div>
+            <div class="col-span-10 pt-3">
+                <div class="mb-3">
+                    <p>Votre photo de profil</p>
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        class="px-5 py-1 text-white bg-gradient-to-r from-[#468fc8] to-[#2ccbf1] border border-[#38aed2] rounded"><i
+                            class="fa-solid fa-pen-to-square"></i> Remplacer</button>
+                    <button
+                        class="px-5 py-1 hover:text-white hover:bg-gradient-to-r hover:from-[#4082b5] hover:to-[#2abade]  text-[#38aed2] bg-white rounded border border-[#38aed2]"><i
+                            class="fa-solid fa-trash"></i> Supprimer</button>
+                </div>
+            </div>
+
+            <form [formGroup]="profileForm" class="col-span-12 grid grid-cols-12 mt-8 text-gray-600"
+                (ngSubmit)="updateProfile()">
+                <div class="col-span-6 px-3">
+                    <label for="last_name">Nom</label>
+                    <input id="last_name" formControlName="last_name" type="text"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                    </div>
+                <div class="col-span-6 px-3">
+                    <label for="first_name">Prénom</label>
+                    <input id="first_name" formControlName="first_name" type="text"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="last_name">Adresse E-mail</label>
+                    <input id="last_name" formControlName="email" type="text"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="first_name">Date de naissance</label>
+                    <input id="first_name" formControlName="birthday" type="date"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="last_name">Numéro de téléphone</label>            
+                    <input id="last_name" formControlName="telephone" type="tel"
+                        class="mt-5 px-4 py-2 rounded w-full border border-[#38aed2] focus:outline-none focus:border-[#468fc8] focus:border-2" />
+                </div>
+                <div class="col-span-6 px-3 mt-6">
+                    <label for="first_name">Genre</label>
+                    <div class="mt-7 flex items-center gap-4">
+                        <div>
+                            <input type="radio" id="male" formControlName="gender" value="M"
+                                class="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <label for="male">Male</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="female" formControlName="gender" value="F"
+                                class="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <label for="female">Female</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-12 mt-6 text-right px-4">
+                    <button type="reset"
+                        class="mr-4 px-5 py-1 text-gray-600 bg-gray-200 hover:bg-gray-300 border border-gray-200 rounded">
+                        Annuler</button>
+                    <button type="submit"
+                        class="px-5 py-1 text-white bg-gradient-to-r from-[#468fc8] to-[#2ccbf1] hover:from-[#4082b5] hover:to-[#2abade] rounded border border-[#38aed2]">
+                        Enregistrer</button>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</div>
